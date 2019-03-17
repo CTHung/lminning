@@ -37,13 +37,17 @@ index_2 = '-1'
 index_3 = '-1'
 index_4 = '-1'
 index_5 = '-1'
+old_record_ID = '-1'
+old_last_number = -1
+record_ID = '-1'
+last_number = -1
 
 for line in file:
     ABflag = False
 
     # 檢查這一行裡面有沒有 A
     for i in range(0 ,len(line)):
-        if line[i] == 'AB': # 有 AB 就將計數器 + 1
+        if line[i:i+2] == 'AB': # 有 AB 就將計數器 + 1
             ABflag = True
 
     if ABflag == True:
@@ -59,11 +63,6 @@ for line in file:
 
         data = line.split(' ')
 
-
-        if len(number) == 0:
-            record_ID = data[9]
-            last_number = int(data[10])
-
         counter = 0
         if index_0 == data[0]:
             counter = counter + 1
@@ -78,6 +77,11 @@ for line in file:
         if index_5 == data[5]:
             counter = counter + 1
 
+        old_record_ID = record_ID
+        old_last_number = last_number
+        record_ID = data[9]
+        last_number = int(data[10])
+
         index_0 = data[0]
         index_1 = data[1]
         index_2 = data[2]
@@ -86,7 +90,7 @@ for line in file:
         index_5 = data[5]
 
         if len(number) != 0 and counter != 6:
-            printnumber(record_ID, last_number, number, output)
+            printnumber(old_record_ID, old_last_number, number, output)
             number = []
 
         id = int(data[6])
@@ -95,8 +99,8 @@ for line in file:
         continue
 
     if len(number) != 0:
-        printnumber(number, output)
+        printnumber(old_record_ID, old_last_number, number, output)
         number = []
 
 if len(number) != 0:
-    printnumber(number, output)
+    printnumber(old_record_ID, old_last_number, number, output)
